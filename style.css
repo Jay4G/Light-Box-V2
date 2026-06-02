@@ -1,0 +1,444 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  overflow-x: hidden;
+}
+
+/* ===== PAGE CONTENT ===== */
+.website-content {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.website-content h1 {
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: #1a1a2e;
+}
+
+.website-content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+/* ===== NAVBAR ===== */
+.uk-navbar-container {
+  background: #1a1a2e !important;
+}
+
+.uk-navbar-container .uk-logo {
+  color: #fff !important;
+  font-size: 18px;
+}
+
+.uk-navbar-nav > li > a {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* ===== FULL-WIDTH IMAGE PREVIEW ===== */
+.image-section {
+  position: relative;
+  width: 100%;
+  margin: 20px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ddd;
+  aspect-ratio: 16 / 9;
+}
+
+.cropped-image-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Preview image: fill full width, center-crop intelligently */
+.cropped-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+
+/* Subtle edge fade to suggest more content */
+.cropped-image-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.25));
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===== FLOATING VIEW BUTTON ===== */
+.view-full-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  padding: 0;
+}
+
+.view-full-btn:hover,
+.view-full-btn:active {
+  background: rgba(0, 0, 0, 0.85);
+  transform: scale(1.1);
+}
+
+.view-full-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+/* ===== FULLSCREEN MODAL VIEWER ===== */
+.fullscreen-image-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 99999;
+  overflow: hidden;
+}
+
+.fullscreen-image-modal.active {
+  display: flex;
+  animation: modalFadeIn 0.35s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Modal Overlay (dark background) */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 1;
+  cursor: pointer;
+}
+
+/* Modal Container */
+.modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Close Button */
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s ease, transform 0.15s ease;
+  padding: 0;
+}
+
+.modal-close-btn:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0.95);
+}
+
+.close-icon {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+/* Modal Header (Title) */
+.modal-header {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 60px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-title {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+/* Image Container with Horizontal Scroll */
+.modal-image-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  background: #000;
+}
+
+.modal-image-container img {
+  height: auto;
+  width: auto;
+  max-height: 100%;
+  max-width: none;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Disable scrollbar styling for modal */
+.modal-image-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.modal-image-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-image-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+/* Swipe/Drag Indicator */
+.modal-swipe-indicator {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+  animation: fadeInUp 0.6s ease 0.3s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.swipe-icon {
+  width: 32px;
+  height: 32px;
+  fill: rgba(255, 255, 255, 0.6);
+  animation: slideHorizontal 2s ease-in-out infinite;
+}
+
+@keyframes slideHorizontal {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+
+.swipe-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.swipe-instruction {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-weight: 500;
+}
+
+.rotate-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+/* Hide swipe indicator after scroll activity */
+.modal-swipe-indicator.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Modal Scroll Progress Bar */
+.modal-scroll-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, #ff6b35, #f7c948);
+  width: 0%;
+  transition: width 0.1s ease;
+  z-index: 10;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+}
+
+/* Portrait orientation adjustment */
+@media screen and (orientation: portrait) {
+  .modal-swipe-indicator {
+    bottom: 48px;
+  }
+}
+
+/* Landscape orientation adjustment */
+@media screen and (orientation: landscape) {
+  .modal-header {
+    top: 12px;
+    right: 50px;
+  }
+
+  .modal-close-btn {
+    top: 12px;
+    right: 12px;
+  }
+
+  .modal-swipe-indicator {
+    bottom: 16px;
+  }
+
+  .swipe-instruction {
+    font-size: 12px;
+  }
+
+  .rotate-hint {
+    display: none;
+  }
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 24px 0;
+}
+
+/* ===== UIkit CARD OVERRIDES ===== */
+.uk-card.uk-card-default {
+  border-radius: 12px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 360px) {
+  .view-full-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .view-full-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .modal-close-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .close-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .modal-header {
+    top: 12px;
+    right: 50px;
+  }
+
+  .modal-title {
+    font-size: 13px;
+  }
+
+  .image-section {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* ===== SMOOTH TRANSITIONS ===== */
+@supports (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Prevent flashing and layout shifts */
+img {
+  display: block;
+}

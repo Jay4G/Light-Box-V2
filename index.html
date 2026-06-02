@@ -1,1 +1,225 @@
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mobile Image Viewer — UIkit</title>
+
+  <!-- UIkit CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/css/uikit.min.css" />
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-left">
+      <a class="uk-navbar-item uk-logo" href="#">
+        <span uk-icon="icon: bolt; ratio: 1.2"></span> ChurchApp
+      </a>
+    </div>
+    <div class="uk-navbar-right">
+      <ul class="uk-navbar-nav">
+        <li><a href="#"><span uk-icon="icon: menu"></span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="website-content" id="websiteContent">
+
+    <div class="uk-margin-medium-bottom">
+      <h1 class="uk-heading-small uk-text-bold uk-margin-remove-bottom">📖 Church Bulletin</h1>
+      <p class="uk-text-meta uk-margin-small-top">
+        Tap the <span class="uk-label uk-label-success" style="font-size:11px;">🔍 View</span> icon on any image to view
+        in full-screen. Swipe left &amp; right to explore!
+      </p>
+    </div>
+
+    <!-- IMAGE CARDS CONTAINER -->
+    <div id="imageCardsContainer"></div>
+
+    <!-- EVENTS LIST -->
+    <div class="uk-margin-medium-top">
+      <h2 class="uk-h3 uk-text-bold">
+        <span uk-icon="icon: bolt; ratio: 1"></span> Upcoming Events
+      </h2>
+      <ul class="uk-list uk-list-divider">
+        <li>
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-auto"><span class="uk-badge">SUN</span></div>
+            <div class="uk-width-expand">
+              <strong>Sunday Worship Service</strong>
+              <p class="uk-text-meta uk-margin-remove">9:00 AM — Main Auditorium</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-auto"><span class="uk-badge">WED</span></div>
+            <div class="uk-width-expand">
+              <strong>Bible Study</strong>
+              <p class="uk-text-meta uk-margin-remove">6:30 PM — Fellowship Hall</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-auto"><span class="uk-badge">FRI</span></div>
+            <div class="uk-width-expand">
+              <strong>Prayer Night</strong>
+              <p class="uk-text-meta uk-margin-remove">10:00 PM — Prayer Room</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="uk-alert-primary uk-margin-medium-top" uk-alert>
+      <a class="uk-alert-close" uk-close></a>
+      <p><strong>💡 Tip:</strong> Tap the 🔍 icon on any image to view it in full-screen mode and explore!</p>
+    </div>
+
+  </div><!-- END website-content -->
+
+
+  <!-- ===== FULL-SCREEN IMAGE VIEWER MODAL ===== -->
+  <div class="fullscreen-image-modal" id="fullscreenImageModal" role="dialog" aria-hidden="true" aria-label="Full screen image viewer">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    
+    <div class="modal-container">
+      <!-- Close Button -->
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close image viewer">
+        <svg viewBox="0 0 24 24" class="close-icon">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+      </button>
+
+      <!-- Image Title/Label -->
+      <div class="modal-header" id="modalHeader">
+        <h2 class="modal-title" id="modalTitle">Image</h2>
+      </div>
+
+      <!-- Image Container with Scroll -->
+      <div class="modal-image-container" id="modalImageContainer" role="img">
+        <img id="modalImage" alt="Full screen image" loading="lazy" />
+      </div>
+
+      <!-- Drag/Swipe Indicator -->
+      <div class="modal-swipe-indicator" id="modalSwipeIndicator">
+        <svg class="swipe-icon" viewBox="0 0 24 24">
+          <path d="M7 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm7-7C6.48 3 3 6.48 3 10.5S6.48 18 10.5 18h.5v-2h-.5C7.57 16 5 13.43 5 10.5S7.57 5 10.5 5 16 7.57 16 10.5v.5h2v-.5C18 6.48 14.52 3 10.5 3zm7 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+        <div class="swipe-text">
+          <span class="swipe-instruction">Swipe left/right to explore</span>
+          <span class="rotate-hint">💡 Tip: Rotate device for best view</span>
+        </div>
+      </div>
+
+      <!-- Progress Indicator -->
+      <div class="modal-scroll-progress" id="modalScrollProgress"></div>
+    </div>
+  </div>
+
+
+  <!-- UIkit JS -->
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/js/uikit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/js/uikit-icons.min.js"></script>
+
+  <!-- Image Viewer Module -->
+  <script src="script.js"></script>
+
+  <!-- Page Initialization -->
+  <script>
+    // Initialize image viewer with multiple image sets
+    const imageCollections = [
+      {
+        id: 'weekly-schedule',
+        title: 'Weekly Event Schedule',
+        icon: 'calendar',
+        date: 'Updated May 29, 2026',
+        images: [
+          {
+            src: 'images/aerial-drone-view-chisinau-downtown-panorama-view-multiple-buildings-roads-parks.jpg',
+            label: 'Weekly Event Schedule'
+          }
+        ]
+      },
+      {
+        id: 'monthly-programme',
+        title: 'Monthly Programme',
+        icon: 'list',
+        date: 'Updated May 29, 2026',
+        images: [
+          {
+            src: 'images/aerial-drone-view-chisinau-downtown-panorama-view-multiple-buildings-roads-parks.jpg',
+            label: 'Monthly Programme'
+          }
+        ]
+      }
+    ];
+
+    // Render image cards
+    function renderImageCards() {
+      const container = document.getElementById('imageCardsContainer');
+      
+      imageCollections.forEach((collection, collectionIndex) => {
+        const card = document.createElement('div');
+        card.className = 'uk-card uk-card-default uk-card-hover uk-margin-medium-bottom';
+        
+        const imagesHtml = collection.images.map((img, imgIndex) => `
+          <div class="image-section">
+            <div class="cropped-image-wrapper">
+              <img src="${img.src}" alt="${img.label}" loading="lazy">
+            </div>
+            <button class="view-full-btn" onclick="imageViewerModule.openFullscreen(${collectionIndex}, ${imgIndex})" aria-label="View full image in expanded mode">
+              <svg viewBox="0 0 24 24">
+                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+              </svg>
+            </button>
+          </div>
+        `).join('');
+
+        card.innerHTML = `
+          <div class="uk-card-header" style="padding: 12px 16px;">
+            <h3 class="uk-card-title uk-margin-remove-bottom" style="font-size:16px;">
+              <span uk-icon="icon: ${collection.icon}; ratio: 0.9"></span> ${collection.title}
+            </h3>
+            <p class="uk-text-meta uk-margin-remove-top">${collection.date}</p>
+          </div>
+
+          <div class="uk-card-body" style="padding: 0;">
+            ${imagesHtml}
+          </div>
+
+          <div class="uk-card-footer" style="padding: 10px 16px;">
+            <button class="uk-button uk-button-text uk-button-small" onclick="imageViewerModule.openFullscreen(${collectionIndex}, 0)">
+              <span uk-icon="icon: expand; ratio: 0.8"></span> View Full Image
+            </button>
+          </div>
+        `;
+
+        container.appendChild(card);
+
+        // Add section divider
+        if (collectionIndex < imageCollections.length - 1) {
+          const divider = document.createElement('div');
+          divider.className = 'section-divider';
+          container.appendChild(divider);
+        }
+      });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderImageCards();
+      imageViewerModule.init(imageCollections);
+    });
+  </script>
+
+</body>
+</html>
